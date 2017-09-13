@@ -8,57 +8,62 @@ import java.util.Queue;
 import java.util.Random;
 
 public class ProcessingQueue {
-    private Queue<DocumentType> documentQueue;
+    private Queue<DocumentType> processingQueue;
     private DocumentsQueue biology;
     private DocumentsQueue math;
 
     public ProcessingQueue(DocumentsQueue biology, DocumentsQueue math) {
-        this.documentQueue = new LinkedList<>();
+        this.processingQueue = new LinkedList<>();
         this.biology = biology;
         this.math = math;
     }
 
     public DocumentType poll() {
-        return documentQueue.poll();
+        return processingQueue.poll();
     }
 
     public DocumentType peek() {
-        return documentQueue.peek();
+        return processingQueue.peek();
     }
 
     public boolean isEmpty() {
-        return documentQueue.isEmpty();
+        return processingQueue.isEmpty();
     }
 
-    public void checkAndFillProcessingQueue() {
-        if (documentQueue.size() < 25) {
-            while (documentQueue.size() != 50) {
-
-                boolean type;   //if true poll from biology
-                if (biology.getDocumentsQueue().isEmpty()) {
-                    type = false;
-                } else if (math.getDocumentsQueue().isEmpty()) {
-                    type = true;
+    public synchronized void checkAndFillProcessingQueue() {
+        if (processingQueue.size() < 25) {
+            while (processingQueue.size() != 50) {
+                boolean isTypeBiology;   //if true poll from biology
+                if (biology.isEmpty() && math.isEmpty()) {
+                    break;
+                } else if (biology.isEmpty() && !math.isEmpty()) {
+                    isTypeBiology = false;
+                } else if (math.isEmpty() && !biology.isEmpty()) {
+                    isTypeBiology = true;
                 } else {
                     Random random = new Random();
-                    type = random.nextBoolean();
+                    isTypeBiology = random.nextBoolean();
                 }
-                DocumentType doc;
-                if (type) {
-                    doc = biology.poll();
-                } else {
-                    doc = math.poll();
-                }
-                documentQueue.add(doc);
+                moveToProcessingQueue(isTypeBiology);
             }
         }
     }
 
-    public Queue<DocumentType> getDocumentQueue() {
-        return documentQueue;
+    private void moveToProcessingQueue(boolean isTypeBiology) {
+        DocumentType doc;
+        if (isTypeBiology) {
+            doc = biology.poll();
+        } else {
+            doc = math.poll();
+        }
+        processingQueue.add(doc);
     }
 
-    public void setDocumentQueue(Queue<DocumentType> documentQueue) {
-        this.documentQueue = documentQueue;
+    public Queue<DocumentType> getProcessingQueue() {
+        return processingQueue;
+    }
+
+    public void setProcessingQueue(Queue<DocumentType> processingQueue) {
+        this.processingQueue = processingQueue;
     }
 }
