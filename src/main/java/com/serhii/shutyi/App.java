@@ -19,29 +19,31 @@ public class App {
         SecondUniversity secondUniversity = new SecondUniversity(processingQueue);
         ThirdUniversity thirdUniversity = new ThirdUniversity(processingQueue);
 
-        Thread threadFirst = new Thread(firstUniversity);
-        Thread threadSecond = new Thread(secondUniversity);
-        Thread threadThird = new Thread(thirdUniversity);
+        Thread threadFirst = new Thread(firstUniversity, "first");
+        Thread threadSecond = new Thread(secondUniversity, "second");
+        Thread threadThird = new Thread(thirdUniversity, "third");
 
         threadFirst.start();
         threadSecond.start();
         threadThird.start();
 
         try {
-            Thread.sleep(7000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        System.out.println("1 univ size = " + firstUniversity.getUniversity().size());
+        // show results
+        System.out.println("Docs in all universities = " +
+                (firstUniversity.size() +
+                        secondUniversity.size() +
+                        thirdUniversity.size())
+        );
+        System.out.println("1 univ size = " + firstUniversity.size());
         System.out.println(firstUniversity.toString());
-        System.out.println("2 univ size = " + secondUniversity.getUniversity().size());
+        System.out.println("2 univ size = " + secondUniversity.size());
         System.out.println(secondUniversity.toString());
-        System.out.println("3 univ size = " + thirdUniversity.getUniversity().size());
+        System.out.println("3 univ size = " + thirdUniversity.size());
         System.out.println(thirdUniversity.toString());
-
-
-
-
     }
 }
