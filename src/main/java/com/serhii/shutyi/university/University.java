@@ -35,6 +35,10 @@ public abstract class University implements Runnable {
 
     abstract void processDocs();
 
+    public int size() {
+        return university.size();
+    }
+
     public ProcessingQueue getProcessingQueue() {
         return processingQueue;
     }

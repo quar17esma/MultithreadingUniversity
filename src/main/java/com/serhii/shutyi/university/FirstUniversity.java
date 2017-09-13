@@ -11,11 +11,15 @@ public class FirstUniversity extends University {
 
     @Override
     void processDocs() {
-        while (!getProcessingQueue().isEmpty()
-                && getProcessingQueue().peek().equals(DocumentType.BIOLOGY)) {
-            getUniversity().add(getProcessingQueue().poll());
+        if (getProcessingQueue() != null) {
+            while (!getProcessingQueue().isEmpty() && isBiology()) {
+                getUniversity().add(getProcessingQueue().poll());
+            }
         }
     }
 
+    private boolean isBiology() {
+        return getProcessingQueue().peek().equals(DocumentType.BIOLOGY);
+    }
 
 }

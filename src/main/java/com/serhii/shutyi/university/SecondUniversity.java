@@ -12,12 +12,17 @@ public class SecondUniversity extends University {
 
     @Override
     void processDocs() {
-        Random random = new Random();
-        int quantity = random.nextInt(5) + 1;
-        for (int i = 0; i < quantity; i++) {
-            if (!getProcessingQueue().isEmpty()) {
-                getUniversity().add(getProcessingQueue().poll());
+        if (getProcessingQueue() != null) {
+            for (int i = 0; i < getRandomQuantity(); i++) {
+                if (!getProcessingQueue().isEmpty()) {
+                    getUniversity().add(getProcessingQueue().poll());
+                }
             }
         }
+    }
+
+    private int getRandomQuantity() {
+        Random random = new Random();
+        return random.nextInt(5) + 1;
     }
 }

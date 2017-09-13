@@ -11,9 +11,14 @@ public class ThirdUniversity extends University {
 
     @Override
     void processDocs() {
-        while (!getProcessingQueue().isEmpty()
-                && getProcessingQueue().peek().equals(DocumentType.MATH)) {
-            getUniversity().add(getProcessingQueue().poll());
+        if (getProcessingQueue() != null) {
+            while (!getProcessingQueue().isEmpty() && isMath()) {
+                getUniversity().add(getProcessingQueue().poll());
+            }
         }
+    }
+
+    private boolean isMath() {
+        return getProcessingQueue().peek().equals(DocumentType.MATH);
     }
 }

@@ -17,6 +17,10 @@ public class DocumentsQueue {
         return documentsQueue.poll();
     }
 
+    public boolean isEmpty(){
+        return documentsQueue.isEmpty();
+    }
+
     public Queue<DocumentType> getDocumentsQueue() {
         return documentsQueue;
     }
